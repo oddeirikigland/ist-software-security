@@ -30,7 +30,6 @@ def main(program_slice, vulnerability_pattern):
     output = program_analysis(program_slice_json, vuln_pattern_json)
 
     write_to_json(output, output_filename)
-    print("Output file saved to: {}".format(output_filename))
 
 
 if __name__ == "__main__":
