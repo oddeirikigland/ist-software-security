@@ -13,3 +13,6 @@ Example
 ```bash
 python ./bo-analyser.py data/cursor_slice.json data/vuln_pattern.json
 ```
+
+For more information about ast_types:
+https://greentreesnakes.readthedocs.io/en/latest/nodes.html
