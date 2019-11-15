@@ -1,0 +1,127 @@
+{
+    "ast_type": "Module",
+    "body": [
+        {
+            "ast_type": "Assign",
+            "col_offset": 0,
+            "lineno": 1,
+            "targets": [
+                {
+                    "ast_type": "Name",
+                    "col_offset": 0,
+                    "ctx": {
+                        "ast_type": "Store"
+                    },
+                    "id": "a",
+                    "lineno": 1
+                }
+            ],
+            "value": {
+                "ast_type": "Num",
+                "col_offset": 3,
+                "lineno": 1,
+                "n": {
+                    "ast_type": "int",
+                    "n": 0,
+                    "n_str": "0"
+                }
+            }
+        },
+        {
+            "ast_type": "If",
+            "body": [
+                {
+                    "ast_type": "Expr",
+                    "col_offset": 4,
+                    "lineno": 3,
+                    "value": {
+                        "args": [
+                            {
+                                "ast_type": "Str",
+                                "col_offset": 10,
+                                "lineno": 3,
+                                "s": "2"
+                            }
+                        ],
+                        "ast_type": "Call",
+                        "col_offset": 4,
+                        "func": {
+                            "ast_type": "Name",
+                            "col_offset": 4,
+                            "ctx": {
+                                "ast_type": "Load"
+                            },
+                            "id": "print",
+                            "lineno": 3
+                        },
+                        "keywords": [],
+                        "lineno": 3
+                    }
+                }
+            ],
+            "col_offset": 0,
+            "lineno": 2,
+            "orelse": [
+                {
+                    "ast_type": "Expr",
+                    "col_offset": 4,
+                    "lineno": 5,
+                    "value": {
+                        "args": [
+                            {
+                                "ast_type": "Str",
+                                "col_offset": 10,
+                                "lineno": 5,
+                                "s": "3"
+                            }
+                        ],
+                        "ast_type": "Call",
+                        "col_offset": 4,
+                        "func": {
+                            "ast_type": "Name",
+                            "col_offset": 4,
+                            "ctx": {
+                                "ast_type": "Load"
+                            },
+                            "id": "print",
+                            "lineno": 5
+                        },
+                        "keywords": [],
+                        "lineno": 5
+                    }
+                }
+            ],
+            "test": {
+                "ast_type": "Compare",
+                "col_offset": 3,
+                "comparators": [
+                    {
+                        "ast_type": "Num",
+                        "col_offset": 8,
+                        "lineno": 2,
+                        "n": {
+                            "ast_type": "int",
+                            "n": 0,
+                            "n_str": "0"
+                        }
+                    }
+                ],
+                "left": {
+                    "ast_type": "Name",
+                    "col_offset": 3,
+                    "ctx": {
+                        "ast_type": "Load"
+                    },
+                    "id": "a",
+                    "lineno": 2
+                },
+                "lineno": 2,
+                "ops": [
+                    {
+                        "ast_type": "Eq"
+                    }
+                ]
+            }
+        }
+    ]
+}
