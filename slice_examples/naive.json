@@ -1,1 +1,270 @@
-{"ast_type":"Module","body":[{"args":{"args":[],"ast_type":"arguments","defaults":[],"kw_defaults":[],"kwarg":null,"kwonlyargs":[],"vararg":null},"ast_type":"FunctionDef","body":[{"ast_type":"Assign","col_offset":4,"lineno":3,"targets":[{"ast_type":"Name","col_offset":4,"ctx":{"ast_type":"Store"},"id":"param","lineno":3}],"value":{"args":[{"ast_type":"Str","col_offset":29,"lineno":3,"s":"param"},{"ast_type":"Str","col_offset":38,"lineno":3,"s":"not set"}],"ast_type":"Call","col_offset":12,"func":{"ast_type":"Attribute","attr":"get","col_offset":12,"ctx":{"ast_type":"Load"},"lineno":3,"value":{"ast_type":"Attribute","attr":"args","col_offset":12,"ctx":{"ast_type":"Load"},"lineno":3,"value":{"ast_type":"Name","col_offset":12,"ctx":{"ast_type":"Load"},"id":"request","lineno":3}}},"keywords":[],"lineno":3}},{"ast_type":"Assign","col_offset":4,"lineno":4,"targets":[{"ast_type":"Name","col_offset":4,"ctx":{"ast_type":"Store"},"id":"result","lineno":4}],"value":{"args":[{"ast_type":"Name","col_offset":31,"ctx":{"ast_type":"Load"},"id":"param","lineno":4}],"ast_type":"Call","col_offset":13,"func":{"ast_type":"Attribute","attr":"execute","col_offset":13,"ctx":{"ast_type":"Load"},"lineno":4,"value":{"ast_type":"Attribute","attr":"engine","col_offset":13,"ctx":{"ast_type":"Load"},"lineno":4,"value":{"ast_type":"Name","col_offset":13,"ctx":{"ast_type":"Load"},"id":"db","lineno":4}}},"keywords":[],"lineno":4}},{"ast_type":"Expr","col_offset":4,"lineno":5,"value":{"args":[{"args":[],"ast_type":"Call","col_offset":10,"func":{"ast_type":"Attribute","attr":"all","col_offset":10,"ctx":{"ast_type":"Load"},"lineno":5,"value":{"ast_type":"Attribute","attr":"query","col_offset":10,"ctx":{"ast_type":"Load"},"lineno":5,"value":{"ast_type":"Name","col_offset":10,"ctx":{"ast_type":"Load"},"id":"User","lineno":5}}},"keywords":[],"lineno":5}],"ast_type":"Call","col_offset":4,"func":{"ast_type":"Name","col_offset":4,"ctx":{"ast_type":"Load"},"id":"print","lineno":5},"keywords":[{"arg":"file","ast_type":"keyword","value":{"ast_type":"Attribute","attr":"stderr","col_offset":33,"ctx":{"ast_type":"Load"},"lineno":5,"value":{"ast_type":"Name","col_offset":33,"ctx":{"ast_type":"Load"},"id":"sys","lineno":5}}}],"lineno":5}},{"ast_type":"Return","col_offset":4,"lineno":6,"value":{"ast_type":"Str","col_offset":11,"lineno":6,"s":"Result is displayed in console"}}],"col_offset":0,"decorator_list":[{"args":[{"ast_type":"Str","col_offset":11,"lineno":1,"s":"/raw"}],"ast_type":"Call","col_offset":1,"func":{"ast_type":"Attribute","attr":"route","col_offset":1,"ctx":{"ast_type":"Load"},"lineno":1,"value":{"ast_type":"Name","col_offset":1,"ctx":{"ast_type":"Load"},"id":"app","lineno":1}},"keywords":[],"lineno":1}],"lineno":1,"name":"index","returns":null}]}
+{
+    "ast_type": "Module",
+    "body": [
+        {
+            "args": {
+                "args": [],
+                "ast_type": "arguments",
+                "defaults": [],
+                "kw_defaults": [],
+                "kwarg": null,
+                "kwonlyargs": [],
+                "vararg": null
+            },
+            "ast_type": "FunctionDef",
+            "body": [
+                {
+                    "ast_type": "Assign",
+                    "col_offset": 4,
+                    "lineno": 3,
+                    "targets": [
+                        {
+                            "ast_type": "Name",
+                            "col_offset": 4,
+                            "ctx": {
+                                "ast_type": "Store"
+                            },
+                            "id": "param",
+                            "lineno": 3
+                        }
+                    ],
+                    "value": {
+                        "args": [
+                            {
+                                "ast_type": "Str",
+                                "col_offset": 29,
+                                "lineno": 3,
+                                "s": "param"
+                            },
+                            {
+                                "ast_type": "Str",
+                                "col_offset": 38,
+                                "lineno": 3,
+                                "s": "not set"
+                            }
+                        ],
+                        "ast_type": "Call",
+                        "col_offset": 12,
+                        "func": {
+                            "ast_type": "Attribute",
+                            "attr": "get",
+                            "col_offset": 12,
+                            "ctx": {
+                                "ast_type": "Load"
+                            },
+                            "lineno": 3,
+                            "value": {
+                                "ast_type": "Attribute",
+                                "attr": "args",
+                                "col_offset": 12,
+                                "ctx": {
+                                    "ast_type": "Load"
+                                },
+                                "lineno": 3,
+                                "value": {
+                                    "ast_type": "Name",
+                                    "col_offset": 12,
+                                    "ctx": {
+                                        "ast_type": "Load"
+                                    },
+                                    "id": "request",
+                                    "lineno": 3
+                                }
+                            }
+                        },
+                        "keywords": [],
+                        "lineno": 3
+                    }
+                },
+                {
+                    "ast_type": "Assign",
+                    "col_offset": 4,
+                    "lineno": 4,
+                    "targets": [
+                        {
+                            "ast_type": "Name",
+                            "col_offset": 4,
+                            "ctx": {
+                                "ast_type": "Store"
+                            },
+                            "id": "result",
+                            "lineno": 4
+                        }
+                    ],
+                    "value": {
+                        "args": [
+                            {
+                                "ast_type": "Name",
+                                "col_offset": 31,
+                                "ctx": {
+                                    "ast_type": "Load"
+                                },
+                                "id": "param",
+                                "lineno": 4
+                            }
+                        ],
+                        "ast_type": "Call",
+                        "col_offset": 13,
+                        "func": {
+                            "ast_type": "Attribute",
+                            "attr": "execute",
+                            "col_offset": 13,
+                            "ctx": {
+                                "ast_type": "Load"
+                            },
+                            "lineno": 4,
+                            "value": {
+                                "ast_type": "Attribute",
+                                "attr": "engine",
+                                "col_offset": 13,
+                                "ctx": {
+                                    "ast_type": "Load"
+                                },
+                                "lineno": 4,
+                                "value": {
+                                    "ast_type": "Name",
+                                    "col_offset": 13,
+                                    "ctx": {
+                                        "ast_type": "Load"
+                                    },
+                                    "id": "db",
+                                    "lineno": 4
+                                }
+                            }
+                        },
+                        "keywords": [],
+                        "lineno": 4
+                    }
+                },
+                {
+                    "ast_type": "Expr",
+                    "col_offset": 4,
+                    "lineno": 5,
+                    "value": {
+                        "args": [
+                            {
+                                "args": [],
+                                "ast_type": "Call",
+                                "col_offset": 10,
+                                "func": {
+                                    "ast_type": "Attribute",
+                                    "attr": "all",
+                                    "col_offset": 10,
+                                    "ctx": {
+                                        "ast_type": "Load"
+                                    },
+                                    "lineno": 5,
+                                    "value": {
+                                        "ast_type": "Attribute",
+                                        "attr": "query",
+                                        "col_offset": 10,
+                                        "ctx": {
+                                            "ast_type": "Load"
+                                        },
+                                        "lineno": 5,
+                                        "value": {
+                                            "ast_type": "Name",
+                                            "col_offset": 10,
+                                            "ctx": {
+                                                "ast_type": "Load"
+                                            },
+                                            "id": "User",
+                                            "lineno": 5
+                                        }
+                                    }
+                                },
+                                "keywords": [],
+                                "lineno": 5
+                            }
+                        ],
+                        "ast_type": "Call",
+                        "col_offset": 4,
+                        "func": {
+                            "ast_type": "Name",
+                            "col_offset": 4,
+                            "ctx": {
+                                "ast_type": "Load"
+                            },
+                            "id": "print",
+                            "lineno": 5
+                        },
+                        "keywords": [
+                            {
+                                "arg": "file",
+                                "ast_type": "keyword",
+                                "value": {
+                                    "ast_type": "Attribute",
+                                    "attr": "stderr",
+                                    "col_offset": 33,
+                                    "ctx": {
+                                        "ast_type": "Load"
+                                    },
+                                    "lineno": 5,
+                                    "value": {
+                                        "ast_type": "Name",
+                                        "col_offset": 33,
+                                        "ctx": {
+                                            "ast_type": "Load"
+                                        },
+                                        "id": "sys",
+                                        "lineno": 5
+                                    }
+                                }
+                            }
+                        ],
+                        "lineno": 5
+                    }
+                },
+                {
+                    "ast_type": "Return",
+                    "col_offset": 4,
+                    "lineno": 6,
+                    "value": {
+                        "ast_type": "Str",
+                        "col_offset": 11,
+                        "lineno": 6,
+                        "s": "Result is displayed in console"
+                    }
+                }
+            ],
+            "col_offset": 0,
+            "decorator_list": [
+                {
+                    "args": [
+                        {
+                            "ast_type": "Str",
+                            "col_offset": 11,
+                            "lineno": 1,
+                            "s": "/raw"
+                        }
+                    ],
+                    "ast_type": "Call",
+                    "col_offset": 1,
+                    "func": {
+                        "ast_type": "Attribute",
+                        "attr": "route",
+                        "col_offset": 1,
+                        "ctx": {
+                            "ast_type": "Load"
+                        },
+                        "lineno": 1,
+                        "value": {
+                            "ast_type": "Name",
+                            "col_offset": 1,
+                            "ctx": {
+                                "ast_type": "Load"
+                            },
+                            "id": "app",
+                            "lineno": 1
+                        }
+                    },
+                    "keywords": [],
+                    "lineno": 1
+                }
+            ],
+            "lineno": 1,
+            "name": "index",
+            "returns": null
+        }
+    ]
+}
