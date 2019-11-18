@@ -85,18 +85,23 @@ def check_if_tainted(d, node, sources):
 def build_taint_trace(d):
     for arg in (d["value"]["args"]):
         try:
-            if not arg["id"] in variable_condition_store:
+            id = ""
+            if "id" in arg:
+                id = "id"
+            elif "s" in arg:
+                id = "s"
+            if not arg[id] in variable_condition_store and id != "":
                 variable_condition_store[arg["id"]] = False
                 # Keep track of the variable and safe the assigned variables
                 for target in d["targets"]:
-                    target_id = target["id"]
+                    target_id = target[id]
                     # In case there has already been an assignment it will be added to the trace (list)
                     if arg["id"] not in tainted_store:
                         tainted_store[arg["id"]] = target_id
                     else:
                         tainted_store[arg["id"]].append(target_id)
         except KeyError:
-            print("id not found")
+            print("id of assignment not found in dict")
 
 
 def check_taint_use(d, node):
@@ -105,8 +110,10 @@ def check_taint_use(d, node):
         # Check if is used in a child node
         if walk_interesting_tree(node, tainted_store[tainted]):
             # Get the function calll that uses it
-            sinks.append(d["func"]["attr"])
-
+           try:
+                sinks.append(d["func"]["attr"])
+           except KeyError:
+               print("bllaaaa")
 
 # d: input slice as dict
 # parent node: root node of ast
