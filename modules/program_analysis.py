@@ -58,14 +58,19 @@ def check_if_tainted(d, node, sources):
                 # if it isnt safed already
                 if d["value"]["func"]["id"] not in vuln_funcs:
                     vuln_funcs.append(d["value"]["func"]["id"])
-            build_taint_trace(d)
-            check_taint_use(d, node)
             # Todo: find the id of the variable, to save it for the output
         except KeyError:
             # Todo: which functions do not have an id?
             # Todo: dont think we need to consider them
             print("something else")
-
+        try:
+            if d["value"]["func"]["attr"] in sources:
+                if d["value"]["func"]["attr"] not in vuln_funcs:
+                    vuln_funcs.append(d["value"]["func"]["attr"])
+        except KeyError:
+            print("nofunc attr found")
+        build_taint_trace(d)
+        check_taint_use(d, node)
     # if d["value"]["ast_type"] == "Name":
     #    for
     # Add all variables to the tainted list that are affected by the ones that are already in the tainted_list
@@ -79,16 +84,19 @@ def check_if_tainted(d, node, sources):
 # => check sibling nodes
 def build_taint_trace(d):
     for arg in (d["value"]["args"]):
-        if not arg["id"] in variable_condition_store:
-            variable_condition_store[arg["id"]] = False
-            # Keep track of the variable and safe the assigned variables
-            for target in d["targets"]:
-                target_id = target["id"]
-                # In case there has already been an assignment it will be added to the trace (list)
-                if arg["id"] not in tainted_store:
-                    tainted_store[arg["id"]] = target_id
-                else:
-                    tainted_store[arg["id"]].append(target_id)
+        try:
+            if not arg["id"] in variable_condition_store:
+                variable_condition_store[arg["id"]] = False
+                # Keep track of the variable and safe the assigned variables
+                for target in d["targets"]:
+                    target_id = target["id"]
+                    # In case there has already been an assignment it will be added to the trace (list)
+                    if arg["id"] not in tainted_store:
+                        tainted_store[arg["id"]] = target_id
+                    else:
+                        tainted_store[arg["id"]].append(target_id)
+        except KeyError:
+            print("id not found")
 
 
 def check_taint_use(d, node):
@@ -149,11 +157,15 @@ def program_analysis(program_slice_json, vuln_pattern_json):
     sink = walk_interesting_tree(top_node, to_find=pattern["sinks"])
     new_template = template
     new_template["sink"] = sink
-    new_template["source"] = tainted_store.keys()
+    tainted_trails = list(tainted_store.keys())
+    if len(tainted_trails) > 0:
+        new_template["source"] = tainted_trails[0]
     # vuln = match_vuln(pattern, sinks)
    # new_template["vulnerability"] = vuln
     output.append(new_template)
+    print("vuln funcs {}".format(vuln_funcs))
     print(sink)
     print("sinkss {}".format(sinks))
     print("tainted store {}".format(tainted_store))
+    print(output)
     return output[0]
