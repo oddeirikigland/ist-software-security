@@ -1,1 +1,6 @@
-{"vulnerability": "", "source": "", "sink": "execute", "sanitizer": ""}
+{
+    "vulnerability": "",
+    "source": "",
+    "sink": "execute",
+    "sanitizer": ""
+}
