@@ -1,0 +1,6 @@
+{
+    "vulnerability": "SQL injection",
+    "source": "koneksi",
+    "sink": "s",
+    "sanitizer": ""
+}

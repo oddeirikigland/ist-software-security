@@ -1,0 +1,6 @@
+{
+    "vulnerability": "SQL injection",
+    "source": "nis",
+    "sink": "z",
+    "sanitizer": ""
+}

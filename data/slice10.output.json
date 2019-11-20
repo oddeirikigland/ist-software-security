@@ -1,0 +1,6 @@
+{
+    "vulnerability": "SQL injection",
+    "source": "indarg",
+    "sink": "s",
+    "sanitizer": ""
+}
