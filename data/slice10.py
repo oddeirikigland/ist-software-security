@@ -1,5 +1,6 @@
 nis=a('nis')
-while indarg == "":
+arg3=""
+while nis == "":
       query="xpto" + arg3
       arg3 = arg2
       arg2 = arg1
