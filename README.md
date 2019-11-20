@@ -14,5 +14,7 @@ Example
 python ./bo-analyser.py data/cursor_slice.json data/vuln_pattern.json
 ```
 
+If you want to use the debug mode just add 1
+
 For more information about ast_types:
 https://greentreesnakes.readthedocs.io/en/latest/nodes.html
