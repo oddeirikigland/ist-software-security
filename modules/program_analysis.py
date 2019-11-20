@@ -103,7 +103,7 @@ def walk_dict(d, sources, sanitizers, sinks):
                 walk_dict(elem, sources, sanitizers, sinks)
 
 
-def program_analysis(program_slice_json, vuln_pattern_json):
+def program_analysis(program_slice_json, vuln_pattern_json, debug):
     global output
     global template
 
@@ -119,5 +119,9 @@ def program_analysis(program_slice_json, vuln_pattern_json):
             vul["vulnerability"] = pattern["vulnerability"]
         if len(output) > 0:
             return output[0]
-    # If no vulnerability found
+    if debug:
+        print("################# DEBUG START #################")
+        print("tainted_dict {} \n".format(tainted_dict))
+        print("parent dict {} \n".format(parent_dict))
+        print("################# DEBUG END   #################")
     return template
