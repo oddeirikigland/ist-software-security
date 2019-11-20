@@ -34,7 +34,12 @@ def check_if_tainted(d, sources, variable_to_be_assign):
             return TAINTED
 
     if d["ast_type"] == "Call":
-        if d["func"]["id"] in sources:
+        if d["func"]["ast_type"] == "Attribute":
+            source = d["func"]["attr"]
+        else:
+            source = d["func"]["id"]
+
+        if source in sources:
             return TAINTED
         for arg in d["args"]:
             return check_if_tainted(arg, sources, variable_to_be_assign)
@@ -44,6 +49,9 @@ def check_if_tainted(d, sources, variable_to_be_assign):
         left = check_if_tainted(d["left"], sources, variable_to_be_assign)
         right = check_if_tainted(d["right"], sources, variable_to_be_assign)
         return TAINTED if left == TAINTED or right == TAINTED else NOT_TAINTED
+
+    if d["ast_type"] == "Attribute":
+        return check_if_tainted(d["value"], sources, variable_to_be_assign)
     raise RuntimeError("ALARM! Unconsidered type")
 
 
@@ -53,7 +61,10 @@ def walk_dict(d, sources, sinks):
         determine_level(d, sources)
 
     if ast_type == "Call":
-        sink = d["func"]["id"]
+        if d["func"]["ast_type"] == "Attribute":
+            sink = d["func"]["attr"]
+        else:
+            sink = d["func"]["id"]
         if sink in sinks:
             for arg in d["args"]:
                 sink_key = sink + UNIQUE_KEY
