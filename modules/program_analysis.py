@@ -88,11 +88,12 @@ def walk_dict(d, sources, sanitizers, sinks):
                 if status == TAINTED or status == SANITIZED:
                     new_template = template
                     new_template["sink"] = sink
-                    new_template["source"] = parent_dict[sink_key]
-                    if status == SANITIZED:
-                        new_template["sanitizer"] = sanitized_dict[
-                            parent_dict[sink_key]
-                        ]
+                    if sink_key in parent_dict:
+                        new_template["source"] = parent_dict[sink_key]
+                        if status == SANITIZED:
+                            new_template["sanitizer"] = sanitized_dict[
+                                parent_dict[sink_key]
+                            ]
                     output.append(new_template)
 
     for key, value in d.items():
@@ -118,10 +119,19 @@ def program_analysis(program_slice_json, vuln_pattern_json, debug):
         for vul in output:
             vul["vulnerability"] = pattern["vulnerability"]
         if len(output) > 0:
+            if debug:
+                print("################# DEBUG START #################")
+                print("output: \n")
+                print("tainted_dict {} \n".format(tainted_dict))
+                print("parent dict {} \n".format(parent_dict))
+                print(template)
+                print("################# DEBUG END   #################")
             return output[0]
     if debug:
         print("################# DEBUG START #################")
+        print("template: \n")
         print("tainted_dict {} \n".format(tainted_dict))
         print("parent dict {} \n".format(parent_dict))
+        print(template)
         print("################# DEBUG END   #################")
     return template
