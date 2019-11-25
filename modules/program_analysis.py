@@ -71,7 +71,16 @@ def check_if_tainted(d, sources, sanitizers, variable_to_be_assign):
 
     if d["ast_type"] == "NameConstant":
         return NOT_TAINTED
-    raise RuntimeError("ALARM! Unconsidered type: {}".format(d["ast_type"]))
+    if d["ast_type"] == "Tuple":
+        status_list = [check_if_tainted(elem, sources, sanitizers, variable_to_be_assign) for elem in d["elts"]]
+        if TAINTED in status_list:
+            return TAINTED
+        else:
+            return NOT_TAINTED
+    #if d["ast_type"] == "Compare":
+    #    compared_left = check_if_tainted(d[com])
+    s = "ALARM! Unconsidered type: {}".format(d["ast_type"])
+    raise RuntimeError(s)
 
 
 def walk_dict(d, sources, sanitizers, sinks):
@@ -80,7 +89,8 @@ def walk_dict(d, sources, sanitizers, sinks):
         determine_level(
             d, sources, sanitizers, variable_to_be_assign=d["targets"][0]["id"]
         )
-
+    #if ast_type == "If":
+    #    walk_dict(d["test"], sources, sanitizers, sinks)
     if ast_type == "Call":
         if d["func"]["ast_type"] == "Attribute":
             sink = d["func"]["attr"]
