@@ -68,7 +68,10 @@ def check_if_tainted(d, sources, sanitizers, variable_to_be_assign):
 
     if d["ast_type"] == "Attribute":
         return check_if_tainted(d["value"], sources, sanitizers, variable_to_be_assign)
-    raise RuntimeError("ALARM! Unconsidered type")
+
+    if d["ast_type"] == "NameConstant":
+        return NOT_TAINTED
+    raise RuntimeError("ALARM! Unconsidered type: {}".format(d["ast_type"]))
 
 
 def walk_dict(d, sources, sanitizers, sinks):
