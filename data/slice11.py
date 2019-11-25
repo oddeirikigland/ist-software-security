@@ -21,3 +21,5 @@ while (arg != "") :
     arg = substr(arg,1)
 u="xpto1" + indarg + "xpto2"
 z(u,koneksi)
+
+# tip: indirect flows can encode effective vulnerabilities

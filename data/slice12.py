@@ -3,3 +3,5 @@ new_query_string = ('SELECT * FROM ionosphere AND anomaly_timestamp >= %s' % fro
 query_string = new_query_string
 stmt = query_string
 it = engine.execute(stmt)
+
+# tip: example of a real vulnerability slice found on the web

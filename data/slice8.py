@@ -5,3 +5,5 @@ if indarg == nis:
 else:
    q="xpto2"
 w(q,koneksi)
+
+# tip: conditionals can encode implicit flows
