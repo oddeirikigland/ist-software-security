@@ -73,12 +73,11 @@ def check_if_tainted(d, sources, sanitizers, variable_to_be_assign):
         return NOT_TAINTED
     if d["ast_type"] == "Tuple":
         status_list = [check_if_tainted(elem, sources, sanitizers, variable_to_be_assign) for elem in d["elts"]]
-        if TAINTED in status_list:
-            return TAINTED
-        else:
-            return NOT_TAINTED
-    #if d["ast_type"] == "Compare":
-    #    compared_left = check_if_tainted(d[com])
+        return TAINTED if TAINTED in status_list else NOT_TAINTED
+    if d["ast_type"] == "Compare":
+        comparator = check_if_tainted(d["comparators"], sources, sanitizers, variable_to_be_assign)
+        left = check_if_tainted(d["left"], sources, sanitizers, variable_to_be_assign)
+        return TAINTED if TAINTED in comparator or TAINTED in left else NOT_TAINTED
     s = "ALARM! Unconsidered type: {}".format(d["ast_type"])
     raise RuntimeError(s)
 
@@ -88,9 +87,21 @@ def walk_dict(d, sources, sanitizers, sinks):
     if ast_type == "Assign":
         determine_level(
             d, sources, sanitizers, variable_to_be_assign=d["targets"][0]["id"]
-        )
-    #if ast_type == "If":
-    #    walk_dict(d["test"], sources, sanitizers, sinks)
+      )
+    #TODO
+    #if ast_type == "BoolOp"_
+    #TODO
+    if d["ast_type"] == "Compare":
+        try:
+            determine_level(d, sources, sanitizers, variable_to_be_assign=d["comparators"][0]["id"])
+        except:
+            print("Could not evaluate Compare statement")
+    if ast_type == "If":
+        determine_level(d["test"], sources, sanitizers, sinks)
+        determine_level(d["body"][0], sources, sanitizers, sinks)
+        for i in len(d["orelse"]):
+            els = d["orelse"][i]
+            walk_dict(els, sources, sanitizers, sinks)
     if ast_type == "Call":
         if d["func"]["ast_type"] == "Attribute":
             sink = d["func"]["attr"]
