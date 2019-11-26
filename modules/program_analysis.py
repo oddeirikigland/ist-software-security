@@ -75,7 +75,7 @@ def check_if_tainted(d, sources, sanitizers, variable_to_be_assign):
         status_list = [check_if_tainted(elem, sources, sanitizers, variable_to_be_assign) for elem in d["elts"]]
         return TAINTED if TAINTED in status_list else NOT_TAINTED
     if d["ast_type"] == "Compare":
-        comparator = check_if_tainted(d["comparators"], sources, sanitizers, variable_to_be_assign)
+        comparator = check_if_tainted(d["comparators"][0], sources, sanitizers, variable_to_be_assign)
         left = check_if_tainted(d["left"], sources, sanitizers, variable_to_be_assign)
         return TAINTED if TAINTED in comparator or TAINTED in left else NOT_TAINTED
     s = "ALARM! Unconsidered type: {}".format(d["ast_type"])
@@ -88,18 +88,24 @@ def walk_dict(d, sources, sanitizers, sinks):
         determine_level(
             d, sources, sanitizers, variable_to_be_assign=d["targets"][0]["id"]
       )
-    #TODO
-    #if ast_type == "BoolOp"_
-    #TODO
+    if ast_type == "Compare":
+    # TODO to be evaluated
+        implicit = check_if_tainted(d, sources, sanitizers, None)
+        if implicit == TAINTED:
+            print("Implicit flow detected")
+    if ast_type == "BoolOp":
+    # TODO determine type of BoolOp
+        for i in range(len(d["values"])):
+            walk_dict(d["values"][i], sources, sanitizers, sinks)
     if d["ast_type"] == "Compare":
         try:
             determine_level(d, sources, sanitizers, variable_to_be_assign=d["comparators"][0]["id"])
         except:
             print("Could not evaluate Compare statement")
     if ast_type == "If":
-        determine_level(d["test"], sources, sanitizers, sinks)
-        determine_level(d["body"][0], sources, sanitizers, sinks)
-        for i in len(d["orelse"]):
+        walk_dict(d["test"], sources, sanitizers, sinks)
+        walk_dict(d["body"][0], sources, sanitizers, sinks)
+        for i in range(len(d["orelse"])):
             els = d["orelse"][i]
             walk_dict(els, sources, sanitizers, sinks)
     if ast_type == "Call":
