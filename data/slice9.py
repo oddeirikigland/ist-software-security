@@ -6,3 +6,5 @@ while indarg == nis  :
       indarg = t(indarg)
 q=w(koneksi,q)
 
+# tip: while loops can encode implicit flows
+

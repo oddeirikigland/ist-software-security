@@ -6,3 +6,5 @@ else:
    q="xpto1" + indarg + "xpto2"
 q=w(q,koneksi)
 
+# tip: different control paths, via branching, might encode or not different vulnerablities.
+

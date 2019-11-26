@@ -42,9 +42,13 @@ def check_if_tainted(d, sources, sanitizers, variable_to_be_assign):
             function_name = d["func"]["id"]
         if function_name in sources:
             return TAINTED
-
+        #should we check if the parameters in the sanitizer function is tainted?
         if function_name in sanitizers:
-            status = SANITIZED
+            for arg in d["args"]:
+                if arg["id"] in tainted_dict and tainted_dict[arg["id"]]["status"] == TAINTED:
+                    status = SANITIZED
+                else:
+                    status = NOT_TAINTED
         else:
             status = NOT_TAINTED
         for arg in d["args"]:
@@ -64,7 +68,19 @@ def check_if_tainted(d, sources, sanitizers, variable_to_be_assign):
 
     if d["ast_type"] == "Attribute":
         return check_if_tainted(d["value"], sources, sanitizers, variable_to_be_assign)
-    raise RuntimeError("ALARM! Unconsidered type")
+
+    if d["ast_type"] == "NameConstant":
+        return NOT_TAINTED
+    if d["ast_type"] == "Tuple":
+        status_list = [check_if_tainted(elem, sources, sanitizers, variable_to_be_assign) for elem in d["elts"]]
+        if TAINTED in status_list:
+            return TAINTED
+        else:
+            return NOT_TAINTED
+    #if d["ast_type"] == "Compare":
+    #    compared_left = check_if_tainted(d[com])
+    s = "ALARM! Unconsidered type: {}".format(d["ast_type"])
+    raise RuntimeError(s)
 
 
 def walk_dict(d, sources, sanitizers, sinks):
@@ -73,7 +89,8 @@ def walk_dict(d, sources, sanitizers, sinks):
         determine_level(
             d, sources, sanitizers, variable_to_be_assign=d["targets"][0]["id"]
         )
-
+    #if ast_type == "If":
+    #    walk_dict(d["test"], sources, sanitizers, sinks)
     if ast_type == "Call":
         if d["func"]["ast_type"] == "Attribute":
             sink = d["func"]["attr"]
@@ -88,11 +105,12 @@ def walk_dict(d, sources, sanitizers, sinks):
                 if status == TAINTED or status == SANITIZED:
                     new_template = template
                     new_template["sink"] = sink
-                    new_template["source"] = parent_dict[sink_key]
-                    if status == SANITIZED:
-                        new_template["sanitizer"] = sanitized_dict[
-                            parent_dict[sink_key]
-                        ]
+                    if sink_key in parent_dict:
+                        new_template["source"] = parent_dict[sink_key]
+                        if status == SANITIZED:
+                            new_template["sanitizer"] = sanitized_dict[
+                                parent_dict[sink_key]
+                            ]
                     output.append(new_template)
 
     for key, value in d.items():
@@ -103,7 +121,7 @@ def walk_dict(d, sources, sanitizers, sinks):
                 walk_dict(elem, sources, sanitizers, sinks)
 
 
-def program_analysis(program_slice_json, vuln_pattern_json):
+def program_analysis(program_slice_json, vuln_pattern_json, debug):
     global output
     global template
 
@@ -118,6 +136,19 @@ def program_analysis(program_slice_json, vuln_pattern_json):
         for vul in output:
             vul["vulnerability"] = pattern["vulnerability"]
         if len(output) > 0:
+            if debug:
+                print("################# DEBUG START #################")
+                print("output: \n")
+                print("tainted_dict {} \n".format(tainted_dict))
+                print("parent dict {} \n".format(parent_dict))
+                print(template)
+                print("################# DEBUG END   #################")
             return output[0]
-    # If no vulnerability found
+    if debug:
+        print("################# DEBUG START #################")
+        print("template: \n")
+        print("tainted_dict {} \n".format(tainted_dict))
+        print("parent dict {} \n".format(parent_dict))
+        print(template)
+        print("################# DEBUG END   #################")
     return template
