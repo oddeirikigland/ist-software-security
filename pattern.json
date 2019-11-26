@@ -1,0 +1,85 @@
+[
+  {
+    "vulnerability": "SQL injection",
+    "sources": [
+      "get",
+      "get_object_or_404",
+      "QueryDict",
+      "ContactMailForm",
+      "ChatMessageForm",
+      "copy",
+      "get_query_string",
+      "get_user_or_404",
+      "User"
+    ],
+    "sanitizers": ["mogrify", "escape_string"],
+    "sinks": ["execute", "raw", "RawSQL"]
+  },
+
+  {
+    "vulnerability": "XXS",
+    "sources": [
+      "get",
+      "get_object_or_404",
+      "QueryDict",
+      "ContactMailForm",
+      "ChatMessageForm",
+      "copy",
+      "get_query_string",
+      "get_user_or_404",
+      "User"
+    ],
+    "sanitizers": [
+      "clean",
+      "escape",
+      "flatatt",
+      "input",
+      "render_template",
+      "render",
+      "render_to_response",
+      "BadRequest"
+    ],
+    "sinks": [
+      "send_mail_jinja",
+      "mark_safe",
+      "Response",
+      "Markup",
+      "Raw",
+      "HTMLString",
+      "render_template_string"
+    ]
+  },
+
+  {
+    "vulnerability": "OS Command Injection",
+    "sources": [
+      "get",
+      "get_object_or_404",
+      "QueryDict",
+      "ContactMailForm",
+      "ChatMessageForm",
+      "copy",
+      "get_query_string",
+      "get_user_or_404",
+      "User"
+    ],
+    "sanitizers": ["Popen"],
+    "sinks": ["call", "check_call", "check_output", "system", "spawn", "popen"]
+  },
+  {
+    "vulnerability": "Path Traversal",
+    "sources": [
+      "get",
+      "get_object_or_404",
+      "QueryDict",
+      "ContactMailForm",
+      "ChatMessageForm",
+      "copy",
+      "get_query_string",
+      "get_user_or_404",
+      "User"
+    ],
+    "sanitizers": ["basename", "secure_filename"],
+    "sinks": ["send_from_directory", "send_file"]
+  }
+]
