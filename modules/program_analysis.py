@@ -42,23 +42,17 @@ def check_if_tainted(d, sources, sanitizers, variable_to_be_assign):
             function_name = d["func"]["id"]
         if function_name in sources:
             return TAINTED
-        #should we check if the parameters in the sanitizer function is tainted?
-        if function_name in sanitizers:
-            for arg in d["args"]:
-                if arg["id"] in tainted_dict and tainted_dict[arg["id"]]["status"] == TAINTED:
-                    status = SANITIZED
-                else:
-                    status = NOT_TAINTED
-        else:
-            status = NOT_TAINTED
+        status = NOT_TAINTED
         for arg in d["args"]:
             current_status = check_if_tainted(
                 arg, sources, sanitizers, variable_to_be_assign
             )
-            if current_status == TAINTED and status == SANITIZED:
+            if current_status == TAINTED:
                 sanitized_dict[arg["id"]] = function_name
             if status == NOT_TAINTED:
                 status = current_status
+        if function_name in sanitizers and status == TAINTED:
+            return SANITIZED
         return status
 
     if d["ast_type"] == "BinOp":
