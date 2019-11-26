@@ -1,3 +1,5 @@
+import json
+
 tainted_dict = {}
 parent_dict = {}
 sanitized_dict = {}
@@ -10,6 +12,10 @@ SANITIZED = "Sanitized"
 
 STATUS = "status"
 UNIQUE_KEY = "123321"
+
+
+def pretty_json(json_dict):
+    return json.dumps(json_dict, indent=4, sort_keys=True)
 
 
 def determine_level(d, sources, sanitizers, variable_to_be_assign):
@@ -51,7 +57,10 @@ def check_if_tainted(d, sources, sanitizers, variable_to_be_assign):
                 arg, sources, sanitizers, variable_to_be_assign
             )
             if function_name_is_sanitizer and current_status == TAINTED:
-                sanitized_dict[arg["id"]] = function_name
+                if arg["id"] in parent_dict:
+                    sanitized_dict[parent_dict[arg["id"]]] = function_name
+                else:
+                    sanitized_dict[arg["id"]] = function_name
             if status == NOT_TAINTED:
                 status = current_status
         if function_name_is_sanitizer and status == TAINTED:
@@ -136,16 +145,16 @@ def program_analysis(program_slice_json, vuln_pattern_json, debug):
             if debug:
                 print("################# DEBUG START #################")
                 print("output: \n")
-                print("tainted_dict {} \n".format(tainted_dict))
-                print("parent dict {} \n".format(parent_dict))
-                print(template)
+                print("tainted_dict {} \n".format(pretty_json(tainted_dict)))
+                print("parent dict {} \n".format(pretty_json(parent_dict)))
+                print(pretty_json(template))
                 print("################# DEBUG END   #################")
             return output[0]
     if debug:
         print("################# DEBUG START #################")
         print("template: \n")
-        print("tainted_dict {} \n".format(tainted_dict))
-        print("parent dict {} \n".format(parent_dict))
-        print(template)
+        print("tainted_dict {} \n".format(pretty_json(tainted_dict)))
+        print("parent dict {} \n".format(pretty_json(parent_dict)))
+        print(pretty_json(template))
         print("################# DEBUG END   #################")
     return template
