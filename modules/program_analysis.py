@@ -57,10 +57,14 @@ def check_if_tainted(d, sources, sanitizers, variable_to_be_assign):
                 arg, sources, sanitizers, variable_to_be_assign
             )
             if function_name_is_sanitizer and current_status == TAINTED:
-                if arg["id"] in parent_dict:
-                    sanitized_dict[parent_dict[arg["id"]]] = function_name
-                else:
-                    sanitized_dict[arg["id"]] = function_name
+                try:
+                    if arg["id"] in parent_dict:
+                        sanitized_dict[parent_dict[arg["id"]]] = function_name
+                    else:
+                        sanitized_dict[arg["id"]] = function_name
+                except KeyError:
+                    # If it's a call inside the sanitizer
+                    sanitized_dict[arg["func"]["id"]] = function_name
             if status == NOT_TAINTED:
                 status = current_status
         if function_name_is_sanitizer and status == TAINTED:
