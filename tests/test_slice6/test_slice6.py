@@ -7,7 +7,7 @@ def test_slice6():
     program_slice = "{}/data/slice6.json".format(ROOT_DIR)
     pattern = "{}/tests/test_slice6/slice6_vuln_pattern.json".format(ROOT_DIR)
 
-    analyzer(program_slice, pattern, debug=True)
+    analyzer(program_slice, pattern, debug=False)
     output = read_from_json("{}/data/slice6.output.json".format(ROOT_DIR))
 
     assert output ==  [{
@@ -19,6 +19,12 @@ def test_slice6():
         {
             "vulnerability": "SQL injection",
             "source": "a",
+            "sink": "z",
+            "sanitizer": "",
+        },
+        {
+            "vulnerability": "SQL injection",
+            "source": "t",
             "sink": "z",
             "sanitizer": "",
         }
