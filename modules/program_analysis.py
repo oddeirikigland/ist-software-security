@@ -1,8 +1,4 @@
-tainted_dict = {}
-parent_dict = {}
-sanitized_dict = {}
-output = []
-template = {"vulnerability": "", "source": "", "sink": "", "sanitizer": ""}
+import json
 
 TAINTED = "Tainted"
 NOT_TAINTED = "Not Tainted"
@@ -10,6 +6,10 @@ SANITIZED = "Sanitized"
 
 STATUS = "status"
 UNIQUE_KEY = "123321"
+
+
+def pretty_json(json_dict):
+    return json.dumps(json_dict, indent=4, sort_keys=True)
 
 
 def determine_level(d, sources, sanitizers, variable_to_be_assign):
@@ -41,24 +41,28 @@ def check_if_tainted(d, sources, sanitizers, variable_to_be_assign):
         else:
             function_name = d["func"]["id"]
         if function_name in sources:
+            parent_dict[variable_to_be_assign] = function_name
             return TAINTED
-        #should we check if the parameters in the sanitizer function is tainted?
-        if function_name in sanitizers:
-            for arg in d["args"]:
-                if arg["id"] in tainted_dict and tainted_dict[arg["id"]]["status"] == TAINTED:
-                    status = SANITIZED
-                else:
-                    status = NOT_TAINTED
-        else:
-            status = NOT_TAINTED
+
+        function_name_is_sanitizer = function_name in sanitizers
+        status = NOT_TAINTED
         for arg in d["args"]:
             current_status = check_if_tainted(
                 arg, sources, sanitizers, variable_to_be_assign
             )
-            if current_status == TAINTED and status == SANITIZED:
-                sanitized_dict[arg["id"]] = function_name
+            if function_name_is_sanitizer and current_status == TAINTED:
+                try:
+                    if arg["id"] in parent_dict:
+                        sanitized_dict[parent_dict[arg["id"]]] = function_name
+                    else:
+                        sanitized_dict[arg["id"]] = function_name
+                except KeyError:
+                    # If it's a call inside the sanitizer
+                    sanitized_dict[arg["func"]["id"]] = function_name
             if status == NOT_TAINTED:
                 status = current_status
+        if function_name_is_sanitizer and status == TAINTED:
+            return SANITIZED
         return status
 
     if d["ast_type"] == "BinOp":
@@ -140,8 +144,18 @@ def walk_dict(d, sources, sanitizers, sinks):
 
 def program_analysis(program_slice_json, vuln_pattern_json, debug):
     global output
+    global parent_dict
+    global tainted_dict
+    global sanitized_dict
     global template
 
+    tainted_dict = {}
+    parent_dict = {}
+    sanitized_dict = {}
+    output = []
+    template = {"vulnerability": "", "source": "", "sink": "", "sanitizer": ""}
+
+    result = []
     for pattern in vuln_pattern_json:
         for operations in program_slice_json["body"]:
             walk_dict(
@@ -156,16 +170,17 @@ def program_analysis(program_slice_json, vuln_pattern_json, debug):
             if debug:
                 print("################# DEBUG START #################")
                 print("output: \n")
-                print("tainted_dict {} \n".format(tainted_dict))
-                print("parent dict {} \n".format(parent_dict))
-                print(template)
+                print("tainted_dict {} \n".format(pretty_json(tainted_dict)))
+                print("parent dict {} \n".format(pretty_json(parent_dict)))
+                print(pretty_json(template))
                 print("################# DEBUG END   #################")
-            return output[0]
+            result += output
+            output = []
     if debug:
         print("################# DEBUG START #################")
         print("template: \n")
-        print("tainted_dict {} \n".format(tainted_dict))
-        print("parent dict {} \n".format(parent_dict))
-        print(template)
+        print("tainted_dict {} \n".format(pretty_json(tainted_dict)))
+        print("parent dict {} \n".format(pretty_json(parent_dict)))
+        print(pretty_json(template))
         print("################# DEBUG END   #################")
-    return template
+    return result
