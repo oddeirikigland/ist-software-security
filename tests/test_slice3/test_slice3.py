@@ -23,5 +23,5 @@ def test_slice3():
             "source": "d",
             "sink": "z",
             "sanitizer": "",
-        }
-    ]
+    }]
+
