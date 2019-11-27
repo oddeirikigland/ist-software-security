@@ -107,7 +107,7 @@ def walk_dict(d, sources, sanitizers, sinks):
                     arg, sources, sanitizers, variable_to_be_assign=sink_key
                 )
                 if status == TAINTED or status == SANITIZED:
-                    new_template = template
+                    new_template = template.copy()
                     new_template["sink"] = sink
                     if sink_key in parent_dict:
                         new_template["source"] = parent_dict[sink_key]

@@ -4,9 +4,9 @@
     "sources": [
       "b"
     ],
-    "sanitizers": [""],
+    "sanitizers": ["y"],
     "sinks": [
-      "y", "s"
+      "s"
     ]
   }
 ]
