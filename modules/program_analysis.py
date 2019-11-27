@@ -1,11 +1,5 @@
 import json
 
-tainted_dict = {}
-parent_dict = {}
-sanitized_dict = {}
-output = []
-template = {"vulnerability": "", "source": "", "sink": "", "sanitizer": ""}
-
 TAINTED = "Tainted"
 NOT_TAINTED = "Not Tainted"
 SANITIZED = "Sanitized"
@@ -133,8 +127,18 @@ def walk_dict(d, sources, sanitizers, sinks):
 
 def program_analysis(program_slice_json, vuln_pattern_json, debug):
     global output
+    global parent_dict
+    global tainted_dict
+    global sanitized_dict
     global template
 
+    tainted_dict = {}
+    parent_dict = {}
+    sanitized_dict = {}
+    output = []
+    template = {"vulnerability": "", "source": "", "sink": "", "sanitizer": ""}
+
+    result = []
     for pattern in vuln_pattern_json:
         for operations in program_slice_json["body"]:
             walk_dict(
@@ -153,7 +157,8 @@ def program_analysis(program_slice_json, vuln_pattern_json, debug):
                 print("parent dict {} \n".format(pretty_json(parent_dict)))
                 print(pretty_json(template))
                 print("################# DEBUG END   #################")
-            return output[0]
+            result += output
+            output = []
     if debug:
         print("################# DEBUG START #################")
         print("template: \n")
@@ -161,4 +166,4 @@ def program_analysis(program_slice_json, vuln_pattern_json, debug):
         print("parent dict {} \n".format(pretty_json(parent_dict)))
         print(pretty_json(template))
         print("################# DEBUG END   #################")
-    return template
+    return result
