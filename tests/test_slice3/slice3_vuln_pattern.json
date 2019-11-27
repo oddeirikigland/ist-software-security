@@ -8,5 +8,15 @@
     "sinks": [
       "z"
     ]
+  },
+  {
+    "vulnerability": "SQL injection",
+    "sources": [
+      "d", "c"
+    ],
+    "sanitizers": ["f"],
+    "sinks": [
+      "z"
+    ]
   }
 ]

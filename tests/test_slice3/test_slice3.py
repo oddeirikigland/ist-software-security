@@ -17,4 +17,11 @@ def test_slice3():
         "source": "d",
         "sink": "z",
         "sanitizer": "t",
-    }]
+    },
+        {
+            "vulnerability": "SQL injection",
+            "source": "d",
+            "sink": "z",
+            "sanitizer": "",
+        }
+    ]
