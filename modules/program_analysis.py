@@ -96,7 +96,7 @@ def walk_dict(d, sources, sanitizers, sinks):
     # TODO to be evaluated
         implicit = check_if_tainted(d, sources, sanitizers, None)
         if implicit == TAINTED:
-            print("Implicit flow detected")
+            implicit_flow = True
     if ast_type == "BoolOp":
     # TODO determine type of BoolOp
         for i in range(len(d["values"])):
