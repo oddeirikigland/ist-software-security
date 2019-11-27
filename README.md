@@ -1,6 +1,6 @@
 # IST SOFTWARE SECURITY
 
-To run program
+## To run program
 
 ```bash
 python ./bo-analyser.py program.json patterns.json
@@ -18,3 +18,11 @@ If you want to use the debug mode just add 1
 
 For more information about ast_types:
 https://greentreesnakes.readthedocs.io/en/latest/nodes.html
+
+## To run tests
+
+From root folder, run the following command:
+
+```bash
+pytest
+```
